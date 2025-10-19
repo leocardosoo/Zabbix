@@ -17,7 +17,7 @@ var Gemini = {
         var request = new HttpRequest();
         request.addHeader('Content-Type: application/json');
         
-        // Construir URL con API key
+        // Construir URL com a API
         var urlWithKey = Gemini.params.url + '?key=' + Gemini.params.api_key;
         
         Zabbix.log(4, '[ Gemini Webhook ] Sending request: ' + urlWithKey + '\n' + JSON.stringify(data));
@@ -50,7 +50,7 @@ try {
         }
     });
 
-    // Formatear la consulta para Gemini
+    // Formatatar para o gemini
      data = {
         contents: [{
             parts: [{
@@ -61,7 +61,7 @@ try {
         }]
     };
 
-    // Configurar la API de Gemini
+    // Configurar a api no zabbix
     Gemini.setParams({ api_key: params.api_key });
     
     // Hacer la solicitud a Gemini
