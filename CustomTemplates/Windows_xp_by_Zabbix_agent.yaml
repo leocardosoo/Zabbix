@@ -85,6 +85,22 @@ zabbix_export:
                 min(/Windows XP by Zabbix agent/icmppingloss,5m)<100
               name: 'ICMP Ping: High ICMP ping loss'
               opdata: 'Loss: {ITEM.LASTVALUE1}'
+        - uuid: 92139095a2734d4ea16d2928558fd24b
+          name: Firewall
+          key: 'service.info[SharedAccess,state]'
+          description: |
+            Monitors the state of the Windows Firewall / Internet Connection Sharing (SharedAccess) service.
+            Returns 1 when the service is running and 0 when it is stopped.
+            Used to detect if the Windows Firewall is disabled or unexpectedly stopped.
+          tags:
+            - tag: Security
+              value: Firewall
+          triggers:
+            - uuid: 143ed906f43b49269f7fd55e99c28ab9
+              expression: 'last(/Windows XP by Zabbix agent/service.info[SharedAccess,state])=0'
+              name: 'Firewall disable'
+              priority: HIGH
+              manual_close: 'YES'
         - uuid: ad670011ef224990a83dc45101d494d8
           name: 'CPU utilization'
           key: system.cpu.util
@@ -233,6 +249,17 @@ zabbix_export:
               tags:
                 - tag: scope
                   value: notice
+        - uuid: da32561e28a44a5299e1e846321bad65
+          name: Svchost
+          key: 'vfs.file.size[C:\Windows\System32\svchost.exe]'
+          description: 'Detects changes in the file size of svchost.exe, which may indicate file tampering or malware activity.'
+          tags:
+            - tag: Security
+              value: Size
+          triggers:
+            - uuid: 968f01493328429b9a6441d8760260ec
+              expression: 'change(/Windows XP by Zabbix agent/vfs.file.size[C:\Windows\System32\svchost.exe])<>0'
+              name: 'Svchost change'
         - uuid: ffbe92f8134b4717a949244c82a7153c
           name: 'Free Space'
           key: 'vfs.fs.size[C:,pfree]'
